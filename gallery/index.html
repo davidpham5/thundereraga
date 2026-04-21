@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tether — Component Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: Figtree, -apple-system, sans-serif; }
+  body { transition: background 200ms ease, color 200ms ease; }
+  @keyframes tether-spin { to { transform: rotate(360deg); } }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  /* App-shell chrome only — design tokens don't leak here */
+  .shell {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 28px 20px;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    background: var(--surface);
+  }
+  .sidebar h1 {
+    font-size: 18px; font-weight: 700; letter-spacing: -0.2px;
+    margin: 0 0 4px 0; color: var(--text);
+  }
+  .sidebar p.kicker {
+    font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase;
+    font-weight: 700; color: var(--subtle); margin: 0 0 28px 0;
+  }
+  .sidebar nav a {
+    display: block; padding: 7px 10px; margin: 1px 0;
+    border-radius: 8px; color: var(--muted);
+    text-decoration: none; font-size: 14px; font-weight: 500;
+    transition: background 120ms, color 120ms;
+  }
+  .sidebar nav a:hover { background: var(--sunken); color: var(--text); }
+  .sidebar nav .group-label {
+    font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase;
+    font-weight: 700; color: var(--subtle);
+    padding: 16px 10px 6px; display: block;
+  }
+
+  .content { padding: 40px 56px 120px; max-width: 1100px; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 36px;
+  }
+  .mode-toggle {
+    display: inline-flex; padding: 3px; border-radius: 999px;
+    background: var(--sunken); border: 1px solid var(--border);
+  }
+  .mode-toggle button {
+    border: none; background: transparent; cursor: pointer;
+    padding: 6px 14px; border-radius: 999px;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    color: var(--muted); transition: background 140ms, color 140ms;
+  }
+  .mode-toggle button.on { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+
+  h2.section-title {
+    font-size: 26px; font-weight: 700; letter-spacing: -0.3px;
+    margin: 0 0 4px 0; color: var(--text);
+  }
+  p.section-sub {
+    font-size: 15px; color: var(--muted); margin: 0 0 28px 0; max-width: 60ch;
+  }
+
+  .subsection-title {
+    font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase;
+    font-weight: 700; color: var(--subtle);
+    margin: 40px 0 12px 0;
+  }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 28px; margin-bottom: 20px;
+  }
+  .card-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .card-head h3 {
+    font-size: 17px; font-weight: 600; margin: 0; color: var(--text);
+  }
+  .card-head .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--subtle);
+  }
+
+  .examples {
+    display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+  }
+  .examples.stack { flex-direction: column; align-items: stretch; gap: 12px; }
+  .caption {
+    font-size: 11px; color: var(--subtle); letter-spacing: 0.3px;
+    margin-top: 8px; font-family: 'JetBrains Mono', monospace;
+  }
+
+  .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 12px; }
+  .swatch { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+  .swatch .chip { height: 64px; }
+  .swatch .meta {
+    padding: 10px 12px; background: var(--surface);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .swatch .meta .k { font-size: 12px; font-weight: 600; color: var(--text); }
+  .swatch .meta .v { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--subtle); }
+
+  .type-row {
+    display: grid; grid-template-columns: 100px 1fr 120px; gap: 16px; align-items: baseline;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .type-row:last-child { border-bottom: none; }
+  .type-row .name { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--subtle); }
+  .type-row .spec { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--subtle); text-align: right; }
+
+  .space-row { display: flex; align-items: center; gap: 16px; padding: 6px 0; }
+  .space-row .label { width: 40px; font-family:'JetBrains Mono', monospace; font-size:11px; color: var(--subtle); }
+  .space-row .bar { height: 12px; background: var(--accent-bg); border-radius: 3px; }
+  .space-row .val { font-family:'JetBrains Mono', monospace; font-size:11px; color: var(--muted); }
+
+  /* Phone preview frame for the nav cards */
+  .phone {
+    width: 340px; height: 260px; border-radius: 18px;
+    border: 1px solid var(--border); overflow: hidden;
+    display: flex; flex-direction: column; background: var(--sunken);
+  }
+  .phone .body { flex: 1; padding: 16px; overflow-y: auto; }
+
+  .tokens-meta-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="components.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
+</body>
+</html>

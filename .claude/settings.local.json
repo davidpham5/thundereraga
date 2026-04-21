@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gunzip -c \"/Users/davidpham/.claude/projects/-Users-davidpham-Developer-thundereraga/eadc3e34-06f9-422d-93fd-e3b000ccdc5c/tool-results/webfetch-1776789409100-21pdzt.bin\")",
+      "Bash(tar -x -O \"thunderaga/project/gallery/app.jsx\")",
+      "Read(//tmp/**)",
+      "Bash(cp /tmp/components.jsx /Users/davidpham/Developer/thundereraga/gallery/components.jsx)",
+      "Bash(cp /tmp/app.jsx /Users/davidpham/Developer/thundereraga/gallery/app.jsx)",
+      "Bash(npm start *)",
+      "Bash(curl -sf http://localhost:3000/ -o /dev/null)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl -sf http://localhost:3000/components.jsx -o /dev/null)",
+      "Bash(curl -sf http://localhost:3000/app.jsx -o /dev/null)",
+      "Bash(curl -sf http://localhost:62745/ -o /tmp/gallery-index.html)",
+      "Bash(curl -sf http://localhost:62745/components.jsx -o /tmp/gallery-comp.jsx)",
+      "Bash(curl -sf http://localhost:62745/app.jsx -o /tmp/gallery-app.jsx)",
+      "Bash(lsof -iTCP:5173 -sTCP:LISTEN)",
+      "Bash(curl -sf http://localhost:4242/ -o /dev/null)",
+      "Bash(curl -s -o /dev/null -w \"index.html: %{http_code}\\\\n\" http://localhost:4242/)",
+      "Bash(curl -s -o /dev/null -w \"components.jsx: %{http_code}\\\\n\" http://localhost:4242/components.jsx)",
+      "Bash(curl -s -o /dev/null -w \"app.jsx: %{http_code}\\\\n\" http://localhost:4242/app.jsx)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(mkdir -p /tmp/thundereraga-design)",
+      "Bash(tar -xzf /Users/davidpham/.claude/projects/-Users-davidpham-Developer-thundereraga/4134a42f-ce67-4c03-b8bd-a48fcac83fef/tool-results/webfetch-1776796778193-qmcq9j.bin)",
+      "Bash(mkdir -p /Users/davidpham/Developer/thundereraga/prototype)",
+      "Bash(cp /tmp/thundereraga-design/thunderaga/project/prototype/index.html /tmp/thundereraga-design/thunderaga/project/prototype/data.jsx /tmp/thundereraga-design/thunderaga/project/prototype/primitives.jsx /tmp/thundereraga-design/thunderaga/project/prototype/screens-onboarding.jsx /tmp/thundereraga-design/thunderaga/project/prototype/screens-tabs.jsx /tmp/thundereraga-design/thunderaga/project/prototype/app.jsx /Users/davidpham/Developer/thundereraga/prototype/)",
+      "Bash(curl -sf -o /dev/null http://localhost:4243/)",
+      "Bash(kill bndjc2en5 *)",
+      "Bash(lsof -ti:4243)",
+      "Bash(xargs -r kill)"
+    ]
+  }
+}
