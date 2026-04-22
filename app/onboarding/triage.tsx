@@ -49,7 +49,7 @@ export default function Triage() {
   };
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} scroll>
       <TopBar
         title='A couple of questions'
         leading={<BackButton onPress={() => router.back()} />}

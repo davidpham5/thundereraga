@@ -28,7 +28,7 @@ export default function Resources() {
   const videoList = cat === 'All' ? videos : videos.filter(v => v.category === cat);
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} scroll>
       <TopBar title="Resources" />
 
       <ScrollView

@@ -32,7 +32,7 @@ export default function Counselors() {
   }, [activeTag]);
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} scroll>
       <TopBar title="Peer Counselors" leading={<BackButton onPress={() => router.back()} label="" />} />
 
       {/* Filter pills */}

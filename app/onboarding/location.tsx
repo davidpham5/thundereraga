@@ -38,7 +38,7 @@ export default function Location() {
   const [stateCode, setStateCode] = useState<string>("");
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} scroll>
       <TopBar
         title='Where are you based?'
         leading={<BackButton onPress={() => router.back()} />}

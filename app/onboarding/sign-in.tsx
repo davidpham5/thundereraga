@@ -22,7 +22,7 @@ export default function SignIn() {
   const [passcode, setPasscode] = useState("");
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} scroll>
       <TopBar
         title='Welcome back'
         leading={<BackButton onPress={() => router.back()} />}

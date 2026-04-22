@@ -27,7 +27,7 @@ export default function CreateHandle() {
   const [handle, setHandle] = useState(() => generateHandle());
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} scroll>
       <TopBar
         title='Your anonymous handle'
         leading={<BackButton onPress={() => router.back()} />}
