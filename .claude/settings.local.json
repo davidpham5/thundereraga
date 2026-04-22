@@ -29,5 +29,8 @@
       "Bash(lsof -ti:4243)",
       "Bash(xargs -r kill)"
     ]
+  },
+  "enabledPlugins": {
+    "figma@claude-plugins-official": true
   }
 }
