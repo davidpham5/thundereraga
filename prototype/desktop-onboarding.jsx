@@ -145,6 +145,88 @@ function OnbWelcome({ goto, setState, brand = 'StandStrong' }) {
   );
 }
 
+function OnbTriage({ goto, back, state, setState }) {
+  const initial =
+    state.triageMode === 'preparing' ? 'imminent'
+    : state.triageMode === 'returning' ? 'returning'
+    : 'laid_off';
+  const [status, setStatus] = React.useState(state.triageStatus || initial);
+  const [flags, setFlags] = React.useState(state.triageFlags || []);
+
+  const toggle = (f) =>
+    setFlags((p) => (p.includes(f) ? p.filter((x) => x !== f) : [...p, f]));
+
+  const route = () => {
+    if (flags.includes('visa_concern')) return 'priya';
+    if (flags.includes('discrimination')) return 'james';
+    if (flags.includes('severance_deadline')) return 'maya';
+    if (status === 'laid_off' && (flags.includes('benefits_ending') || flags.includes('struggling'))) return 'david';
+    if (status === 'imminent' || status === 'not_affected') return 'kiesha';
+    return 'maya';
+  };
+
+  return (
+    <OnbCard width={640} back={back}>
+      <div>
+        <Text variant="display">We'll personalize what you see.</Text>
+        <Text variant="body" tone="muted" style={{ marginTop: 6 }}>
+          Your answers are private and can be changed anytime.
+        </Text>
+      </div>
+
+      <RadioGroup
+        label="What's your situation?"
+        value={status}
+        onChange={setStatus}
+        options={[
+          { value: 'laid_off', label: 'I was laid off' },
+          { value: 'imminent', label: 'I think I might be laid off soon' },
+          { value: 'not_affected', label: "I'm not affected yet, but preparing" },
+          { value: 'returning', label: "I've used this before" },
+        ]}
+      />
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Text variant="label" tone="subtle">ANYTHING URGENT? (OPTIONAL)</Text>
+        <Checkbox checked={flags.includes('severance_deadline')}
+          onChange={() => toggle('severance_deadline')}
+          label="I have a severance deadline" />
+        <Checkbox checked={flags.includes('visa_concern')}
+          onChange={() => toggle('visa_concern')}
+          label="I'm on a work visa (H-1B, etc.)" />
+        <Checkbox checked={flags.includes('benefits_ending')}
+          onChange={() => toggle('benefits_ending')}
+          label="My benefits are ending soon" />
+        <Checkbox checked={flags.includes('discrimination')}
+          onChange={() => toggle('discrimination')}
+          label="I think this may be discrimination" />
+        <Checkbox checked={flags.includes('struggling')}
+          onChange={() => toggle('struggling')}
+          label="I'm struggling — I need to talk to someone" />
+      </div>
+
+      {flags.includes('struggling') && (
+        <Alert tone="info"
+          title="We're here for you."
+          message="After you sign up you can chat with a peer volunteer right away — no waiting." />
+      )}
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <Button label="Continue" variant="primary" size="lg" fullWidth
+          onClick={() => {
+            setState((s) => ({ ...s, persona: route(), triageStatus: status, triageFlags: flags }));
+            goto(3);
+          }} />
+        <Button label="Skip for now" variant="ghost" size="md" fullWidth
+          onClick={() => {
+            setState((s) => ({ ...s, persona: 'maya' }));
+            goto(3);
+          }} />
+      </div>
+    </OnbCard>
+  );
+}
+
 function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer support, anonymous' }) {
   const [step, setStep] = React.useState(1);
   const [data, setData] = React.useState({
@@ -165,9 +247,10 @@ function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer 
 
   let body = null;
   if (step === 1) body = <OnbWelcome {...stepProps} />;
+  else if (step === 2) body = <OnbTriage {...stepProps} />;
   // remaining steps wired up in later tasks
 
   return <OnbShell step={step} brand={brand} tagline={tagline}>{body}</OnbShell>;
 }
 
-Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome });
+Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage });
