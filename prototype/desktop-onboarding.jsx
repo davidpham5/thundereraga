@@ -4,6 +4,15 @@
 // only the layout adapts to the desktop centered-card pattern.
 
 const ONB_TOTAL_STEPS = 7;
+const ONB_HANDLES = [
+  'Portland-Eng-42',
+  'Denver-Hiker-07',
+  'Austin-Reader-91',
+  'Boston-Tea-18',
+  'Seattle-Cloud-23',
+  'NYC-Commuter-55',
+];
+const randomOnbHandle = () => ONB_HANDLES[Math.floor(Math.random() * ONB_HANDLES.length)];
 
 function BrandLockup({ brand = 'StandStrong', tagline = 'Peer support, anonymous' }) {
   return (
@@ -73,7 +82,7 @@ function OnbCard({ width = 520, back, children }) {
   );
 }
 
-function OnbShell({ step, children }) {
+function OnbShell({ step, brand, tagline, children }) {
   return (
     <div style={{
       position: 'relative',
@@ -82,7 +91,7 @@ function OnbShell({ step, children }) {
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
       overflowY: 'auto',
     }}>
-      <BrandLockup />
+      <BrandLockup brand={brand} tagline={tagline} />
       <div style={{
         minHeight: '100vh',
         display: 'flex', flexDirection: 'column',
@@ -96,15 +105,69 @@ function OnbShell({ step, children }) {
   );
 }
 
-function DesktopOnboarding({ onComplete }) {
+function OnbWelcome({ goto, setState, brand = 'StandStrong' }) {
+  const start = (mode) => {
+    setState((s) => ({ ...s, triageMode: mode }));
+    goto(2);
+  };
   return (
-    <OnbShell step={1}>
-      <OnbCard width={520}>
-        <Text variant="display" align="center">Shell preview</Text>
-        <Text tone="muted" align="center">Step components are not wired up yet.</Text>
-      </OnbCard>
-    </OnbShell>
+    <OnbCard width={520}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+        <div style={{
+          width: 72, height: 72, borderRadius: 36, background: T.accent,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#fff', fontSize: 32, fontWeight: 800,
+        }}>{(brand[0] || 'S').toUpperCase()}</div>
+        <Text variant="display" align="center">{brand}</Text>
+        <Text variant="body" tone="muted" align="center">You're not alone in this.</Text>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 8 }}>
+        <Badge tone="success" label="Free forever" />
+        <Badge tone="neutral" label="Anonymous" />
+        <Badge tone="accent" label="Peer-led" />
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Button label="I just got laid off" variant="primary" size="lg" fullWidth
+                onClick={() => start('laid_off')} />
+        <Button label="I have an account" variant="secondary" size="lg" fullWidth
+                onClick={() => start('returning')} />
+        <Button label="I'm preparing, just in case" variant="ghost" size="md" fullWidth
+                onClick={() => start('preparing')} />
+      </div>
+
+      <Text variant="caption" tone="subtle" align="center">
+        We never share your identity with your employer.<br/>
+        Your information is encrypted and yours alone.
+      </Text>
+    </OnbCard>
   );
 }
 
-Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup });
+function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer support, anonymous' }) {
+  const [step, setStep] = React.useState(1);
+  const [data, setData] = React.useState({
+    triageMode: 'laid_off',
+    triageStatus: 'laid_off',
+    triageFlags: [],
+    handle: '',
+    persona: 'maya',
+    stateCode: '',
+  });
+
+  const goto = (n) => setStep(n);
+  const back = () => setStep((s) => Math.max(1, s - 1));
+  const finish = (landingScreen) => {
+    onComplete({ handle: data.handle, persona: data.persona, screen: landingScreen });
+  };
+  const stepProps = { goto, back, state: data, setState: setData, finish, brand };
+
+  let body = null;
+  if (step === 1) body = <OnbWelcome {...stepProps} />;
+  // remaining steps wired up in later tasks
+
+  return <OnbShell step={step} brand={brand} tagline={tagline}>{body}</OnbShell>;
+}
+
+Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome });
