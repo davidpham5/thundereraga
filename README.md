@@ -13,7 +13,7 @@ You can review StandStrong in **four** ways. Pick whichever matches what you're 
 | You want to…                                                    | Use this                                       | Needs a phone? |
 | --------------------------------------------------------------- | ---------------------------------------------- | -------------- |
 | Click through the full mobile flow in a browser (fastest)       | **Mobile prototype** (`npm run prototype`)     | No             |
-| See the desktop-adapted layout in a browser                     | **Web prototype** (`npm run web`)              | No             |
+| See the desktop-adapted layout in a browser                     | **Desktop prototype** (`npm run web`)          | No             |
 | Review individual UI components in isolation                    | **Gallery** (`npm run gallery`)                | No             |
 | Test the real React Native app on a phone (iOS / Android)       | **Expo dev server** (`npm start`)              | Yes            |
 
@@ -216,7 +216,7 @@ The mobile prototype (`index.html`) and desktop prototype (`desktop.html`) are *
 
 When filing an issue, please note:
 
-- Which surface you're testing — **mobile prototype**, **web prototype**, **gallery**, **iOS (Expo Go)**, or **Android (Expo Go)**.
+- Which surface you're testing — **mobile prototype**, **desktop prototype**, **gallery**, **iOS (Expo Go)**, or **Android (Expo Go)**.
 - Device + OS version (e.g. "iPhone 14, iOS 17.4" or "Chrome 124 on macOS 14").
 - Steps to reproduce, expected vs. actual.
 - Screenshot or screen recording if visual.

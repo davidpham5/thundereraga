@@ -21,13 +21,18 @@ gallery/          # In-browser component gallery (open index.html directly)
   index.html      # Shell — loads React + Babel from CDN, references the two JSX files
   components.jsx  # DOM mirrors of every RN component; exports all to window.*
   app.jsx         # Gallery sections (Foundations, Primitives, Forms, Nav, Profile)
-prototype/        # Clickable in-browser prototype of the full StandStrong flow
-  index.html              # Shell — React + Babel from CDN, CSS token vars
-  data.jsx                # Mock personas, resources, counselors, videos
-  primitives.jsx          # DOM ports of src/components/* (Text, Button, Card…)
-  screens-onboarding.jsx  # Welcome → Triage → Handle → Safety → Location → Consent → Confirm
-  screens-tabs.jsx        # Dashboard, Chat, Counselors, Resources, Profile
-  app.jsx                 # Router, iOS phone frame, Dev Nav panel, persona rotation
+prototype/        # Clickable in-browser prototypes — mobile + desktop, sharing data + primitives
+  index.html              # Mobile entry — React + Babel from CDN, iOS phone frame
+  app.jsx                 # Mobile router, phone frame, Dev Nav, persona rotation
+  screens-onboarding.jsx  # Mobile: Welcome → Triage → Handle → Safety → Location → Consent → Confirm
+  screens-tabs.jsx        # Mobile: Dashboard, Chat, Counselors, Resources, Profile
+  desktop.html            # Desktop entry — sidebar layout, no phone frame
+  desktop-app.jsx         # Desktop orchestrator + Tweaks wiring
+  desktop-shell.jsx       # Sidebar, page chrome (PageHeader, PageWrap), nav icons
+  desktop-screens.jsx     # Desktop versions of each tab screen
+  tweaks-panel.jsx        # Reusable Tweaks panel (brand, accent, density…)
+  data.jsx                # Mock personas, resources, counselors, videos (shared)
+  primitives.jsx          # DOM ports of src/components/* — Text, Button, Card… (shared)
 src/              # React Native source (to be scaffolded)
   tokens.ts       # Palette + light/dark themes, type scale, spacing, radii, shadows
   ThemeProvider.tsx
@@ -44,8 +49,9 @@ All visual values flow from semantic token names — never raw hex in component 
 ## Reviewing the gallery & prototype
 
 ```
-npm start       # serves gallery/   at http://localhost:4242
-npm run prototype  # serves prototype/ at http://localhost:4243
+npm run gallery    # serves gallery/   at http://localhost:4242
+npm run prototype  # serves prototype/ at http://localhost:4243        (mobile)
+npm run web        # serves prototype/ at http://localhost:4244/desktop.html
 ```
 
 Don't open the `index.html` files via `file://` — the pages load `.jsx` files over HTTP for in-browser Babel transpile, which browsers block on `file://`. Both scripts use `npx serve` (no install step).
