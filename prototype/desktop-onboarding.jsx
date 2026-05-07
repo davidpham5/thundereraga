@@ -267,6 +267,58 @@ function OnbCreateHandle({ goto, back, state, setState }) {
   );
 }
 
+function OnbSafety({ goto, back }) {
+  const pledges = [
+    { t: 'We never share your identity with your employer.',
+      s: 'Not your name, not your handle, not your activity.' },
+    { t: 'We never sell your data.',
+      s: "We're a nonprofit. Donor-funded, not ad-funded." },
+    { t: 'Peer counselors are vetted volunteers.',
+      s: 'Background-checked and trained, but not licensed attorneys.' },
+    { t: 'You can delete everything anytime.',
+      s: 'One tap in Settings. Full wipe, including message history.' },
+  ];
+  return (
+    <OnbCard width={640} back={back}>
+      <div>
+        <Text variant="display">Before we continue.</Text>
+        <Text variant="body" tone="muted" style={{ marginTop: 6 }}>
+          Four things we promise, and one thing we ask.
+        </Text>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {pledges.map((p, i) => (
+          <Card key={i} variant="outline">
+            <div style={{ display: 'flex', gap: 12 }}>
+              <div style={{
+                width: 28, height: 28, borderRadius: 14,
+                background: T.successSoft,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: T.success, fontWeight: 800, flexShrink: 0,
+              }}>✓</div>
+              <div style={{ flex: 1 }}>
+                <Text variant="body" weight={600}>{p.t}</Text>
+                <Text variant="caption" tone="muted" style={{ marginTop: 2 }}>{p.s}</Text>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      <Card variant="soft" accent="accent">
+        <Text variant="label" tone="accent">WE ASK ONE THING</Text>
+        <Text variant="body" style={{ marginTop: 6 }}>
+          Treat other members with respect. This is a safe space for everyone.
+        </Text>
+      </Card>
+
+      <Button label="I understand — continue" variant="primary" size="lg" fullWidth
+        onClick={() => goto(5)} />
+    </OnbCard>
+  );
+}
+
 function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer support, anonymous' }) {
   const [step, setStep] = React.useState(1);
   const [data, setData] = React.useState({
@@ -289,9 +341,10 @@ function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer 
   if (step === 1) body = <OnbWelcome {...stepProps} />;
   else if (step === 2) body = <OnbTriage {...stepProps} />;
   else if (step === 3) body = <OnbCreateHandle {...stepProps} />;
+  else if (step === 4) body = <OnbSafety {...stepProps} />;
   // remaining steps wired up in later tasks
 
   return <OnbShell step={step} brand={brand} tagline={tagline}>{body}</OnbShell>;
 }
 
-Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage, OnbCreateHandle });
+Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage, OnbCreateHandle, OnbSafety });
