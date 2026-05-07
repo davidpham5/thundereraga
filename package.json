@@ -28,7 +28,8 @@
     "android": "expo start --android",
     "gallery": "npx --yes serve gallery -l 4242",
     "prototype": "npx --yes serve prototype -l 4243",
-    "test": "test"
+    "test": "test",
+    "web": "npx --yes serve prototype -l 4244"
   },
   "dependencies": {
     "expo": "~54.0.0",

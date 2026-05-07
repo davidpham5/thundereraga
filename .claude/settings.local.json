@@ -27,7 +27,16 @@
       "Bash(curl -sf -o /dev/null http://localhost:4243/)",
       "Bash(kill bndjc2en5 *)",
       "Bash(lsof -ti:4243)",
-      "Bash(xargs -r kill)"
+      "Bash(xargs -r kill)",
+      "Bash(mkdir -p /tmp/standstrong-design)",
+      "Bash(curl -sL -o bundle.tar.gz \"https://api.anthropic.com/v1/design/h/Vw3A_ROTchXhq6Py1q0V8Q?open_file=prototype%2Fdesktop.html\")",
+      "Read(//private/tmp/standstrong-design/**)",
+      "Bash(tar -xzf bundle.tar.gz)",
+      "Bash(cp /tmp/standstrong-design/thunderaga/project/prototype/desktop.html /Users/davidpham/Developer/thundereraga/prototype/desktop.html)",
+      "Bash(cp /tmp/standstrong-design/thunderaga/project/prototype/desktop-shell.jsx /Users/davidpham/Developer/thundereraga/prototype/desktop-shell.jsx)",
+      "Bash(cp /tmp/standstrong-design/thunderaga/project/prototype/desktop-screens.jsx /Users/davidpham/Developer/thundereraga/prototype/desktop-screens.jsx)",
+      "Bash(cp /tmp/standstrong-design/thunderaga/project/prototype/desktop-app.jsx /Users/davidpham/Developer/thundereraga/prototype/desktop-app.jsx)",
+      "Bash(cp /tmp/standstrong-design/thunderaga/project/prototype/tweaks-panel.jsx /Users/davidpham/Developer/thundereraga/prototype/tweaks-panel.jsx)"
     ]
   },
   "enabledPlugins": {
