@@ -28,19 +28,38 @@ const DENSITY_SCALE = {
 };
 
 function DesktopApp() {
+  // ?reset: wipe persisted state and strip the query before React reads it.
+  if (typeof window !== 'undefined' && window.location.search.includes('reset')) {
+    try { localStorage.removeItem('standstrong:desktop:state'); } catch {}
+    window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+  }
+
   const saved = (() => {
     try { return JSON.parse(localStorage.getItem('standstrong:desktop:state') || '{}'); }
     catch { return {}; }
   })();
 
+  const forceOnboarding = typeof window !== 'undefined' && window.location.hash === '#onboarding';
+  const [onboarded, setOnboarded] = useStateD(!forceOnboarding && !!saved.handle);
+
   const [persona, setPersona] = useStateD(saved.persona || 'maya');
-  const [handle] = useStateD(saved.handle || '');
+  const [handle, setHandle] = useStateD(saved.handle || '');
   const [screen, setScreen] = useStateD(saved.screen || 'dashboard');
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
 
   useEffectD(() => {
     localStorage.setItem('standstrong:desktop:state', JSON.stringify({ persona, handle, screen }));
   }, [persona, handle, screen]);
+
+  const completeOnboarding = ({ handle: h, persona: p, screen: s }) => {
+    setHandle(h);
+    setPersona(p);
+    setScreen(s || 'dashboard');
+    setOnboarded(true);
+    if (window.location.hash === '#onboarding') {
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  };
 
   // Apply accent + density to the CSS variables on :root.
   useEffectD(() => {
@@ -54,6 +73,10 @@ function DesktopApp() {
     root.style.setProperty('--density-font', d.fontScale);
     document.title = `${t.brand} — Desktop`;
   }, [t.accent, t.density, t.brand]);
+
+  if (!onboarded) {
+    return <DesktopOnboarding onComplete={completeOnboarding} brand={t.brand} tagline={t.tagline} />;
+  }
 
   const state = { persona, handle, stateCode: '', brand: t.brand };
 
