@@ -227,6 +227,46 @@ function OnbTriage({ goto, back, state, setState }) {
   );
 }
 
+function OnbCreateHandle({ goto, back, state, setState }) {
+  const [handle, setHandle] = React.useState(state.handle || randomOnbHandle());
+  return (
+    <OnbCard width={520} back={back}>
+      <div>
+        <Text variant="display">Pick a name to go by.</Text>
+        <Text variant="body" tone="muted" style={{ marginTop: 6 }}>
+          This is what other members and counselors will see. Your real name is never required.
+        </Text>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <TextField
+          label="HANDLE"
+          value={handle}
+          onChange={setHandle}
+          helperText="Letters, numbers, and dashes. Change anytime in Settings." />
+        <div style={{ display: 'flex', gap: 8 }}>
+          <Badge tone="neutral" label="Randomly generated" />
+          <Badge tone="success" label="Available" dot />
+        </div>
+      </div>
+
+      <Alert tone="info"
+        title="Why anonymous?"
+        message="We never link your handle to your real identity or employer. Even our own staff can't see who you are unless you choose to verify." />
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <Button label="Continue" variant="primary" size="lg" fullWidth
+          onClick={() => {
+            setState((s) => ({ ...s, handle }));
+            goto(4);
+          }} />
+        <Button label="Generate another" variant="secondary" size="md" fullWidth
+          onClick={() => setHandle(randomOnbHandle())} />
+      </div>
+    </OnbCard>
+  );
+}
+
 function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer support, anonymous' }) {
   const [step, setStep] = React.useState(1);
   const [data, setData] = React.useState({
@@ -248,9 +288,10 @@ function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer 
   let body = null;
   if (step === 1) body = <OnbWelcome {...stepProps} />;
   else if (step === 2) body = <OnbTriage {...stepProps} />;
+  else if (step === 3) body = <OnbCreateHandle {...stepProps} />;
   // remaining steps wired up in later tasks
 
   return <OnbShell step={step} brand={brand} tagline={tagline}>{body}</OnbShell>;
 }
 
-Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage });
+Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage, OnbCreateHandle });
