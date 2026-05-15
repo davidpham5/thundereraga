@@ -319,6 +319,49 @@ function OnbSafety({ goto, back }) {
   );
 }
 
+function OnbLocation({ goto, back, setState }) {
+  const [st, setSt] = React.useState('');
+  const stateOptions = [
+    { value: 'CA', label: 'California' },
+    { value: 'OR', label: 'Oregon' },
+    { value: 'WA', label: 'Washington' },
+    { value: 'TX', label: 'Texas' },
+    { value: 'GA', label: 'Georgia' },
+    { value: 'NY', label: 'New York' },
+    { value: 'FL', label: 'Florida' },
+    { value: 'IL', label: 'Illinois' },
+    { value: 'MA', label: 'Massachusetts' },
+    { value: 'CO', label: 'Colorado' },
+  ];
+  return (
+    <OnbCard width={520} back={back}>
+      <div>
+        <Text variant="display">We'll show state-specific resources.</Text>
+        <Text variant="body" tone="muted" style={{ marginTop: 6 }}>
+          Unemployment rules, worker-protection laws, and local counselors vary by state.
+        </Text>
+      </div>
+
+      <Select label="STATE" value={st} onChange={setSt}
+        placeholder="Choose your state" options={stateOptions} />
+
+      <Alert tone="info"
+        title="Only your state is used for routing."
+        message="We don't store your city or precise location." />
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <Button label="Continue" variant="primary" size="lg" fullWidth disabled={!st}
+          onClick={() => {
+            setState((s) => ({ ...s, stateCode: st }));
+            goto(6);
+          }} />
+        <Button label="Prefer not to say" variant="ghost" size="md" fullWidth
+          onClick={() => goto(6)} />
+      </div>
+    </OnbCard>
+  );
+}
+
 function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer support, anonymous' }) {
   const [step, setStep] = React.useState(1);
   const [data, setData] = React.useState({
@@ -342,9 +385,10 @@ function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer 
   else if (step === 2) body = <OnbTriage {...stepProps} />;
   else if (step === 3) body = <OnbCreateHandle {...stepProps} />;
   else if (step === 4) body = <OnbSafety {...stepProps} />;
+  else if (step === 5) body = <OnbLocation {...stepProps} />;
   // remaining steps wired up in later tasks
 
   return <OnbShell step={step} brand={brand} tagline={tagline}>{body}</OnbShell>;
 }
 
-Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage, OnbCreateHandle, OnbSafety });
+Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage, OnbCreateHandle, OnbSafety, OnbLocation });
