@@ -362,6 +362,43 @@ function OnbLocation({ goto, back, setState }) {
   );
 }
 
+function OnbConsent({ goto, back }) {
+  const [tos, setTos] = React.useState(false);
+  const [privacy, setPrivacy] = React.useState(false);
+  const [analytics, setAnalytics] = React.useState(true);
+  const canContinue = tos && privacy;
+  return (
+    <OnbCard width={640} back={back}>
+      <div>
+        <Text variant="display">Agreements.</Text>
+        <Text variant="body" tone="muted" style={{ marginTop: 6 }}>
+          Two required, one optional.
+        </Text>
+      </div>
+
+      <Card variant="outline">
+        <Checkbox checked={tos} onChange={setTos}
+          label="I agree to the Terms of Service"
+          description="The basics of how the platform works and what we expect." />
+      </Card>
+      <Card variant="outline">
+        <Checkbox checked={privacy} onChange={setPrivacy}
+          label="I agree to the Privacy Policy"
+          description="We explain exactly what we store, for how long, and why." />
+      </Card>
+      <Card variant="outline">
+        <Checkbox checked={analytics} onChange={setAnalytics}
+          label="Help us improve (optional)"
+          description="Anonymous usage analytics. Never linked to your handle. Turn off anytime." />
+      </Card>
+
+      <Button label="Create my account" variant="primary" size="lg" fullWidth
+        disabled={!canContinue}
+        onClick={() => goto(7)} />
+    </OnbCard>
+  );
+}
+
 function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer support, anonymous' }) {
   const [step, setStep] = React.useState(1);
   const [data, setData] = React.useState({
@@ -386,9 +423,10 @@ function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer 
   else if (step === 3) body = <OnbCreateHandle {...stepProps} />;
   else if (step === 4) body = <OnbSafety {...stepProps} />;
   else if (step === 5) body = <OnbLocation {...stepProps} />;
-  // remaining steps wired up in later tasks
+  else if (step === 6) body = <OnbConsent {...stepProps} />;
+  // Confirm wired in next task
 
   return <OnbShell step={step} brand={brand} tagline={tagline}>{body}</OnbShell>;
 }
 
-Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage, OnbCreateHandle, OnbSafety, OnbLocation });
+Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage, OnbCreateHandle, OnbSafety, OnbLocation, OnbConsent });
