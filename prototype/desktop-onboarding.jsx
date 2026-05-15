@@ -399,6 +399,34 @@ function OnbConsent({ goto, back }) {
   );
 }
 
+function OnbConfirm({ state, finish }) {
+  return (
+    <OnbCard width={520}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+        <div style={{
+          width: 80, height: 80, borderRadius: 40,
+          background: T.successSoft,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: T.success, fontSize: 36, fontWeight: 800,
+        }}>✓</div>
+        <Text variant="display" align="center">Welcome.</Text>
+        <Text variant="body" tone="muted" align="center">You're signed in as</Text>
+        <Badge tone="accent" label={state.handle || 'Anonymous-User'} />
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 16 }}>
+        <Text variant="heading" align="center">What would help right now?</Text>
+        <Button label="Open my dashboard" variant="primary" size="lg" fullWidth
+          onClick={() => finish('dashboard')} />
+        <Button label="Chat with a volunteer now" variant="secondary" size="lg" fullWidth
+          onClick={() => finish('chat')} />
+        <Button label="Browse resources first" variant="ghost" size="md" fullWidth
+          onClick={() => finish('resources')} />
+      </div>
+    </OnbCard>
+  );
+}
+
 function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer support, anonymous' }) {
   const [step, setStep] = React.useState(1);
   const [data, setData] = React.useState({
@@ -424,9 +452,9 @@ function DesktopOnboarding({ onComplete, brand = 'StandStrong', tagline = 'Peer 
   else if (step === 4) body = <OnbSafety {...stepProps} />;
   else if (step === 5) body = <OnbLocation {...stepProps} />;
   else if (step === 6) body = <OnbConsent {...stepProps} />;
-  // Confirm wired in next task
+  else if (step === 7) body = <OnbConfirm {...stepProps} />;
 
   return <OnbShell step={step} brand={brand} tagline={tagline}>{body}</OnbShell>;
 }
 
-Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage, OnbCreateHandle, OnbSafety, OnbLocation, OnbConsent });
+Object.assign(window, { DesktopOnboarding, OnbShell, OnbCard, Stepper, BrandLockup, OnbWelcome, OnbTriage, OnbCreateHandle, OnbSafety, OnbLocation, OnbConsent, OnbConfirm });
