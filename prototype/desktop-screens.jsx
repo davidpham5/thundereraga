@@ -712,6 +712,13 @@ function DesktopProfile({ setScreen, state, persona }) {
         <DesktopProfileGroup title="ACCOUNT">
           <ListItem title="Sign out" onClick={() => setScreen('welcome')} />
           <Divider />
+          <ListItem title="Reset onboarding"
+            subtitle="Wipe local state and restart the intake flow."
+            onClick={() => {
+              try { localStorage.removeItem('standstrong:desktop:state'); } catch {}
+              window.location.assign(window.location.pathname + '?reset');
+            }} />
+          <Divider />
           <ListItem title="Delete my account and data"
             subtitle="Permanent. Cannot be undone." onClick={() => {}} />
         </DesktopProfileGroup>
