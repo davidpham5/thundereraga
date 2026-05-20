@@ -61,6 +61,14 @@ npm run web
 
 Open <http://localhost:4244/desktop.html>.
 
+First-time visitors are auto-gated through a 7-step intake flow (Welcome → Triage → Handle → Safety → Location → Consent → Confirm) before the app shell renders. Triage answers route the user to a persona; the chosen handle and persona persist in `localStorage` so subsequent loads skip the flow and land on the dashboard.
+
+To replay the flow:
+
+- Append `?reset` (e.g. <http://localhost:4244/desktop.html?reset>) to wipe persisted state — the query strips itself after load.
+- Append `#onboarding` to re-enter intake without losing the saved handle — the hash strips after Confirm.
+- Or use **Profile → Reset onboarding** inside the app.
+
 > The mobile and web prototypes are **two distinct designs** of the same product, not two renders of the same code. If a flow looks different between them, that's intentional — the desktop layout is its own design pass.
 >
 > The mobile and desktop prototypes share `data.jsx` and `primitives.jsx` and live in the same `prototype/` folder, so `npm run prototype` (port 4243) and `npm run web` (port 4244) serve the same files — they just default to `index.html` (mobile) and `desktop.html` (desktop) respectively.
@@ -163,6 +171,7 @@ thundereraga/
 │   ├── desktop-app.jsx       # Desktop orchestrator + Tweaks wiring
 │   ├── desktop-shell.jsx     # Sidebar, page chrome, nav icons
 │   ├── desktop-screens.jsx   # Desktop versions of each tab screen
+│   ├── desktop-onboarding.jsx # 7-step intake flow (auto-gated on desktop.html)
 │   ├── tweaks-panel.jsx      # Reusable Tweaks panel (brand, accent, density…)
 │   ├── data.jsx              # Mock personas, resources, counselors, videos (shared)
 │   └── primitives.jsx        # DOM ports of src/components/* (shared)
